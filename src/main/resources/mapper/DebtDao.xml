@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.DebtDao">
+    <select id="queryDebtByDate" resultType="zky.demo.domain.Debt">
+        select ch.goodsName,ch.withCustomer,c.telephone,sr.money
+        from customerhistory ch,customer c,salerecord sr
+        where ch.isPay=0 and ch.withCustomer=c.name and ch.goodsName=sr.saleGoods
+        and ch.createTime>date_sub(current_date(),interval #{range} day)
+        limit #{start},5
+    </select>
+
+    <select id="queryDebtCount" resultType="int">
+        select COUNT(*) from customerhistory where isPay=0
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.EchartsDao">
+    <select id="queryGoodsInventoryForEcharts" resultType="zky.demo.domain.echarts.GoodsInventory">
+        select name,remaining from goods
+    </select>
+
+    <select id="querySaleWeightPercentage" resultType="zky.demo.domain.echarts.SaleWeightPercentage">
+        select saleGoods name,saleWeight value from salerecord
+    </select>
+
+    <select id="queryMonthGoodsSaleMoney" resultType="zky.demo.domain.echarts.GoodsSaleMoney">
+        select saleGoods,money from salerecord where date_sub(CURDATE(),interval 30 day)
+    </select>
+
+    <select id="querySaleProfitByDate" resultType="zky.demo.domain.echarts.SaleProfit">
+        select goods.name as name,round((goods.price-goods.cost)*salerecord.saleWeight,2) as value
+        from goods,salerecord where datediff(now(),salerecord.saleTime) &lt; 30 and goods.name=salerecord.saleGoods
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.SaleRecordDao">
+    <select id="querySaleRecordBetweenDate" resultType="zky.demo.domain.SaleRecord">
+        select * from salerecord where DATE(saleTime) between #{begin} and #{end} limit #{start},#{onePageCount}
+    </select>
+
+    <select id="querySaleRecordCount" resultType="int">
+        select COUNT(*) from salerecord
+    </select>
+
+    <select id="querySumMoneyByDay" resultType="java.lang.Double">
+        select round(SUM(money),2) sumMoney from salerecord where date(saleTime)=#{oneDay}
+    </select>
+
+    <select id="querySaleHistoryDetailsByDate" resultType="zky.demo.domain.SaleHistoryDetails">
+        select saleGoods,saleWeight,salePrice,money from salerecord where date(saleTime)=#{oneDay}
+    </select>
+</mapper>

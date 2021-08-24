@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.GoodsDao">
+    <select id="queryAllGoodsMessage" resultType="zky.demo.domain.GoodsMessage">
+        select saleGoods,SUM(saleWeight) saleWeight,salePrice,cost,repository
+        from salerecord,goods
+        where salerecord.saleGoods=goods.name
+        group by saleGoods
+    </select>
+
+    <select id="queryAllTImeAndWeightByDate" resultType="zky.demo.domain.echarts.TimeAndWeight">
+        select date(saleTime) name,sum(saleWeight) value
+        from salerecord
+        where DateDiff(now(),date(saleTime)) &lt; 30
+        group by date(saleTime)
+    </select>
+
+    <select id="queryAllGoodsAndProfit" resultType="zky.demo.domain.echarts.GoodsAndProfit">
+        SELECT NAME,ROUND(price-cost,2) AS VALUE FROM goods
+    </select>
+</mapper>

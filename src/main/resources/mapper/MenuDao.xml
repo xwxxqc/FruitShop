@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.MenuDao">
+
+    <resultMap id="menu" type="zky.demo.domain.MainMenu">
+        <id column="mainid" property="id"/>
+        <result column="mainname" property="menuName"/>
+        <result column="mainpath" property="path"/>
+        <result column="mainphoto" property="photo"/>
+        <collection property="subMenus" ofType="zky.demo.domain.SubMenu">
+            <id column="smid" property="id"/>
+            <result column="smname" property="menuName"/>
+            <result column="smpath" property="path"/>
+            <result column="smphoto" property="photo"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryMenuByAuth" resultMap="menu">
+        select mm.id mainid,mm.menuName mainname,mm.path mainpath,mm.photo mainphoto,sm.id smid,sm.menuName smname,sm.path smpath,sm.photo smphoto
+        from mainmenu mm,submenu sm,role r,mainmenu_role mr
+        where r.id=mr.roleId and r.roleName=#{auth} and mr.mainmenuId=mm.id and sm.mid=mm.id
+    </select>
+</mapper>

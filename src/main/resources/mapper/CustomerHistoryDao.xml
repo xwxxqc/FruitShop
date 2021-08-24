@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.CustomerHistoryDao">
+    <insert id="addCustomerHistory">
+        insert into customerhistory(createTime,goodsName,goodsPrice,withCustomer,isPay)
+        values(#{createTime},#{goodsName},#{goodsPrice},#{withCustomer},#{isPay})
+    </insert>
+
+    <select id="queryCustomerHistoryByPage" resultType="zky.demo.domain.CustomerHistory">
+        select id,createTime,goodsName,goodsPrice,withCustomer,isPay from customerhistory limit #{start},#{onePageCount}
+    </select>
+
+    <select id="queryHistoryCount" resultType="int">
+        select COUNT(*) from customerhistory
+    </select>
+
+    <select id="queryCustomerHistoryByTimeAndGoods" resultType="zky.demo.domain.CustomerHistory">
+        select * from customerhistory where createTime=#{time} and goodsName=#{goods}
+    </select>
+</mapper>

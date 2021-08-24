@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.CustomerDao">
+
+    <select id="TotalCustomer" resultType="int">
+        select COUNT(*) from customer
+    </select>
+
+    <select id="queryAllCustomerByPage" resultType="zky.demo.domain.Customer">
+        select id,name,sex,age,email,telephone from customer limit #{start},#{OnePageCount}
+    </select>
+
+    <delete id="deleteCustomerById">
+        delete from customer where id=#{id}
+    </delete>
+
+    <update id="updateCustomer">
+        update customer set name=#{name},sex=#{sex},age=#{age},email=#{email},telephone=#{telephone} where id=#{id}
+    </update>
+
+    <select id="queryCustomerById" resultType="zky.demo.domain.Customer">
+        select id,name,sex,age,email,telephone from customer where id=#{id}
+    </select>
+
+    <select id="queryLikeCustomer" resultType="zky.demo.domain.Customer">
+        select id,name,sex,age,email,telephone from customer where name like '%${key}%'
+    </select>
+
+    <select id="queryCustomerByName" resultType="zky.demo.domain.Customer">
+        select id,name,sex,age,email,telephone from customer where name=#{name}
+    </select>
+</mapper>

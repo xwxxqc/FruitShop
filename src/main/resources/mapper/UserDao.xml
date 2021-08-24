@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.UserDao">
+    <select id="queryUserByName" resultType="zky.demo.domain.User">
+        select id,userName,passWord,isEnable,isLock,isCredentials,isExpired,createTime,loginTime
+        from user where userName=#{userName}
+    </select>
+
+    <insert id="addUser">
+        insert into user(userName,passWord,isEnable,isLock,isCredentials,isExpired,createTime,loginTime)
+        values(#{userName},#{passWord},#{isEnable},#{isLock},#{isCredentials},#{isExpired},#{createTime},#{loginTime})
+    </insert>
+
+    <select id="queryRoleByUserId" resultType="zky.demo.domain.Role">
+        select r.roleName,r.roleMemo from role as r,user_role as ur where r.id=ur.roleId and ur.userId=#{id}
+    </select>
+
+    <select id="queryAllRole" resultType="zky.demo.domain.Role">
+        select roleName,roleMemo from role order by id
+    </select>
+
+    <select id="queryAllUserMessage" resultType="zky.demo.domain.UserMessage">
+        SELECT user.id,user.userName,user.createTime,user.loginTime,role.roleName
+        FROM USER,role,user_role
+        WHERE user.id=user_role.userId AND role.id=user_role.roleId
+    </select>
+
+    <select id="queryUserMessageByRole" resultType="zky.demo.domain.UserMessage">
+        SELECT user.id,user.userName,user.createTime,user.loginTime,role.roleName
+        FROM USER,role,user_role
+        WHERE user.id=user_role.userId AND role.id=user_role.roleId AND role.roleName=#{role}
+    </select>
+
+    <delete id="deleteUserMessageById">
+        delete from user where id=#{id}
+    </delete>
+
+    <update id="updateUserMessageById">
+        update user set userName=#{userName},passWord=#{passWord} where id=#{id}
+    </update>
+
+    <select id="queryAllUserRole" resultType="zky.demo.domain.UserRole">
+        SELECT user.userName,role.roleMemo
+        FROM USER,role,user_role
+        WHERE user.id=user_role.userId AND role.id=user_role.roleId
+    </select>
+
+    <update id="updateUserRoleByName">
+        UPDATE user_role SET roleId= (SELECT id FROM (SELECT id FROM role WHERE roleName=#{role}) id)
+        WHERE userId= (SELECT id FROM (SELECT user.id id
+        FROM USER,role,user_role
+        WHERE user.id=user_role.userId AND role.id=user_role.roleId AND user.userName=#{userName}) id)
+    </update>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zky.demo.dao.RepositoryDao">
+    <select id="queryAllGoodsDistributed" resultType="zky.demo.domain.GoodsDistributed">
+        select goods.name,goods.remaining,goods.repository,stock.address
+        from goods,stock where goods.repository=stock.name limit #{start},#{onePageStart}
+    </select>
+
+    <select id="queryAllGoodsDistributedCount" resultType="int">
+        select COUNT(*) from goods
+    </select>
+
+    <select id="queryAllStock" resultType="zky.demo.domain.Stock">
+        select id,name,address,lng,lat from stock
+    </select>
+
+    <select id="queryGoodsDistributedByName" resultType="zky.demo.domain.GoodsDistributed">
+        SELECT goods.name,goods.remaining,goods.repository,stock.address
+        FROM goods,stock WHERE goods.repository=stock.name AND stock.name=#{name} LIMIT #{start},#{onePageStart}
+    </select>
+
+    <select id="queryAllIntoRecordByPage" resultType="zky.demo.domain.IntoRecord">
+        select id,time,name,weight,handler from intorecord order by time desc limit #{start},#{onePageCount}
+    </select>
+
+    <select id="queryAllIntoRecordCount" resultType="int">
+        select COUNT(*) from intorecord
+    </select>
+
+    <select id="queryIntoRecordByDate" resultType="zky.demo.domain.IntoRecord">
+        select id,time,name,weight,handler from intorecord where date(time)=#{time}
+    </select>
+
+    <select id="queryAllRepositoryAdmin" resultType="zky.demo.domain.RepositoryAdmin">
+        SELECT id,NAME,repository,telephone,isWork FROM repositoryadmin ORDER BY id
+    </select>
+
+    <delete id="deleteRepositoryAdmin">
+        delete from repositoryadmin where id=#{id}
+    </delete>
+</mapper>
